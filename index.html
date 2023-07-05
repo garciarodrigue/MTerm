@@ -28,31 +28,36 @@
       color: #fff;
     }
     .input-container {
-      margin: 20px;
+      display: flex;
+      margin-top: 20px;
+      align-items: center;
     }
-    input[type="text"] {
-      width: 100%;
-      padding: 5px;
-      font-family: "Courier New", Courier, monospace;
-      font-size: 16px;
+    .input-container input[type="text"] {
+      flex-grow: 1;
+      margin-right: 10px;
+    }
+    @media screen and (max-width: 768px) {
+      .terminal {
+        height: 300px;
+        margin: 10px;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="input-container">
-    <form id="command-form">
-      <input type="text" id="command-input" placeholder="Enter command">
-    </form>
-  </div>
-
   <div class="terminal">
     <div>Welcome to the Terminal Web</div>
   </div>
 
+  <div class="input-container">
+    <input type="text" placeholder="Enter command">
+    <button type="submit">Submit</button>
+  </div>
+
   <script>
     const terminal = document.querySelector('.terminal');
-    const commandInput = document.querySelector('#command-input');
-    const form = document.querySelector('#command-form');
+    const commandInput = document.querySelector('input[type="text"]');
+    const form = document.createElement("form");
 
     let showFetched = false;
 
@@ -108,7 +113,7 @@
       e.preventDefault();
       const nuevo_dato = commandInput.value;
       const commandOutput = document.createElement("div");
-      commandOutput.innerHTML = `> ${nuevo_dato}`;
+      commandOutput.innerHTML =`> ${nuevo_dato}`;
       commandOutput.classList.add("command");
       terminal.appendChild(commandOutput);
       terminal.scrollTop = terminal.scrollHeight;
@@ -117,12 +122,18 @@
     }
 
     function main() {
+      form.appendChild(commandInput);
       form.addEventListener("submit", handleFormSubmit);
+
+      const inputContainer = document.querySelector('.input-container');
+      inputContainer.appendChild(form);
     }
 
     document.addEventListener("DOMContentLoaded", function() {
       fetchData();
       main();
     });
-
+  </script>
+</body>
+</html>
 
