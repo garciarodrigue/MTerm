@@ -27,17 +27,32 @@
     .command {
       color: #fff;
     }
+    .input-container {
+      margin: 20px;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 5px;
+      font-family: "Courier New", Courier, monospace;
+      font-size: 16px;
+    }
   </style>
 </head>
 <body>
+  <div class="input-container">
+    <form id="command-form">
+      <input type="text" id="command-input" placeholder="Enter command">
+    </form>
+  </div>
+
   <div class="terminal">
     <div>Welcome to the Terminal Web</div>
   </div>
 
   <script>
     const terminal = document.querySelector('.terminal');
-    const commandInput = document.createElement("input");
-    const form = document.createElement("form");
+    const commandInput = document.querySelector('#command-input');
+    const form = document.querySelector('#command-form');
 
     let showFetched = false;
 
@@ -102,11 +117,6 @@
     }
 
     function main() {
-      commandInput.type = "text";
-      commandInput.placeholder = "Enter command";
-      form.appendChild(commandInput);
-      terminal.appendChild(form);
-
       form.addEventListener("submit", handleFormSubmit);
     }
 
@@ -114,7 +124,5 @@
       fetchData();
       main();
     });
-  </script>
-</body>
-</html>
+
 
