@@ -70,7 +70,6 @@
           .then(response => {
             if (response.ok) {
               console.log("Execute", nuevo_dato);
-              showFetched = false;
               setTimeout(() => {
                 fetchData();
               }, 2000);
