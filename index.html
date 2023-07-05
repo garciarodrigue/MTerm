@@ -36,6 +36,8 @@
 
   <script>
     const terminal = document.querySelector('.terminal');
+    const commandInput = document.createElement("input");
+    const form = document.createElement("form");
 
     let showFetched = false;
 
@@ -45,9 +47,13 @@
       fetch(url_show)
         .then(response => response.json())
         .then(show_value => {
-          if (!showFetched && show_value) {
+          if (show_value) {
             console.log("Show value:", show_value);
-            terminal.innerHTML += `\nShow value: ${JSON.stringify(show_value)}\n`;
+            const output = document.createElement("div");
+            output.innerHTML = `Show value: ${JSON.stringify(show_value)}`;
+            output.classList.add("command");
+            terminal.appendChild(output);
+            terminal.scrollTop = terminal.scrollHeight;
             showFetched = true;
           }
         })
@@ -83,20 +89,25 @@
       }
     }
 
+    function handleFormSubmit(e) {
+      e.preventDefault();
+      const nuevo_dato = commandInput.value;
+      const commandOutput = document.createElement("div");
+      commandOutput.innerHTML = `> ${nuevo_dato}`;
+      commandOutput.classList.add("command");
+      terminal.appendChild(commandOutput);
+      terminal.scrollTop = terminal.scrollHeight;
+      commandInput.value = "";
+      sendCommand(nuevo_dato);
+    }
+
     function main() {
-      const form = document.createElement("form");
-      const input = document.createElement("input");
-      input.type = "text";
-      input.placeholder = "Enter command";
-      form.appendChild(input);
+      commandInput.type = "text";
+      commandInput.placeholder = "Enter command";
+      form.appendChild(commandInput);
       terminal.appendChild(form);
 
-      form.addEventListener("submit", function(e) {
-        e.preventDefault();
-        const nuevo_dato = input.value;
-        sendCommand(nuevo_dato);
-        input.value = "";
-      });
+      form.addEventListener("submit", handleFormSubmit);
     }
 
     document.addEventListener("DOMContentLoaded", function() {
