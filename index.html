@@ -71,7 +71,9 @@
             if (response.ok) {
               console.log("Execute", nuevo_dato);
               showFetched = false;
-              fetchData();
+              setTimeout(() => {
+                fetchData();
+              }, 2000);
             } else {
               console.log("404");
             }
