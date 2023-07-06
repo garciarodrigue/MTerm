@@ -50,12 +50,12 @@
   </div>
 
   <div class="input-container">
-    <input type="text" placeholder="Enter command">
+    <input type="text" placeholder="Enter command" id="commandInput">
   </div>
 
   <script>
     const terminal = document.querySelector('.terminal');
-    const commandInput = document.querySelector('input[type="text"]');
+    const commandInput = document.querySelector('#commandInput');
 
     let showFetched = false;
 
@@ -66,7 +66,6 @@
         .then(response => response.json())
         .then(show_value => {
           if (show_value) {
-            clearTerminal();
             console.log("Show value:", show_value);
             const output = document.createElement("div");
             output.innerHTML = `Show value: ${JSON.stringify(show_value)}`;
@@ -112,7 +111,7 @@
       if (e.key === "Enter") {
         e.preventDefault();
         const nuevo_dato = commandInput.value;
-        const commandOutput = documentcreateElement("div");
+        const commandOutput = document.createElement("div");
         commandOutput.innerHTML = `> ${nuevo_dato}`;
         commandOutput.classList.add("command");
         terminal.appendChild(commandOutput);
@@ -120,10 +119,6 @@
         commandInput.value = "";
         sendCommand(nuevo_dato);
       }
-    }
-
-    function clearTerminal() {
-      terminal.innerHTML = "";
     }
 
     function main() {
