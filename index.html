@@ -87,7 +87,7 @@
 
       if (nuevo_dato) {
         fetch(url, {
-          method: "POST",
+          method: "PUT",
           body: JSON.stringify({ command: nuevo_dato }),
           headers: { "Content-Type": "application/json" }
         })
@@ -121,7 +121,7 @@
       }
     }
 
-    function main() {
+       function main() {
       commandInput.addEventListener("keypress", handleKeyPress);
     }
 
@@ -132,5 +132,4 @@
   </script>
 </body>
 </html>
-
 
