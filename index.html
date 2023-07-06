@@ -66,6 +66,7 @@
         .then(response => response.json())
         .then(show_value => {
           if (show_value) {
+            clearTerminal();
             console.log("Show value:", show_value);
             const output = document.createElement("div");
             output.innerHTML = `Show value: ${JSON.stringify(show_value)}`;
@@ -111,7 +112,7 @@
       if (e.key === "Enter") {
         e.preventDefault();
         const nuevo_dato = commandInput.value;
-        const commandOutput = document.createElement("div");
+        const commandOutput = documentcreateElement("div");
         commandOutput.innerHTML = `> ${nuevo_dato}`;
         commandOutput.classList.add("command");
         terminal.appendChild(commandOutput);
@@ -121,7 +122,11 @@
       }
     }
 
-       function main() {
+    function clearTerminal() {
+      terminal.innerHTML = "";
+    }
+
+    function main() {
       commandInput.addEventListener("keypress", handleKeyPress);
     }
 
