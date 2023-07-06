@@ -15,7 +15,7 @@
     }
     .terminal {
       border: 1px solid #fff;
-      height: 400px;
+      height: 700px;
       margin: 20px;
       overflow: auto;
       padding: 10px;
@@ -35,6 +35,8 @@
     }
     .input-container input[type="text"] {
       margin-right: 10px;
+      color:green;
+      background-color: black;
     }
     @media screen and (max-width: 300px) {
       .terminal {
@@ -46,11 +48,11 @@
 </head>
 <body>
   <div class="terminal">
-    <div>Welcome to the Terminal Web</div>
+	  <div><h3>Welcome to the Terminal</h3> Web</div>
   </div>
 
   <div class="input-container">
-    <input type="text" placeholder="Enter command" id="commandInput">
+    <input type="text" placeholder="command" id="commandInput">
   </div>
 
   <script>
@@ -66,7 +68,7 @@
         .then(response => response.json())
         .then(show_value => {
           if (show_value) {
-            console.log("Show value:", show_value);
+            console.log("Result: ", show_value);
             const output = document.createElement("div");
             output.innerHTML = `Show value: ${JSON.stringify(show_value)}`;
             output.classList.add("command");
@@ -93,7 +95,7 @@
         })
           .then(response => {
             if (response.ok) {
-              console.log("Command sent:", nuevo_dato);
+              console.log("Command", nuevo_dato);
               setTimeout(() => {
                 fetchData();
               }, 2000);
