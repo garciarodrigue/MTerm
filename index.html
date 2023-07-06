@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Terminal Web</title>
+  <meta charset="UTF-8">
+  <style>
+    body {
+      background-color: #000;
+      color: #fff;
+      font-family: "Courier New", Courier, monospace;
+      font-size: 16px;
+      line-height: 1.4;
+      margin: 0;
+      padding: 0;
+    }
+    .terminal {
+      border: 1px solid #fff;
+      height: 400px;
+      margin: 20px;
+      overflow: auto;
+      padding: 10px;
+      white-space: pre;
+    }
+    .prompt {
+      color: #0f0;
+    }
+    .command {
+      color: #fff;
+    }
+    .input-container {
+      display: flex;
+      margin-top: 20px;
+      align-items: center;
+      justify-content: center;
+    }
+    .input-container input[type="text"] {
+      margin-right: 10px;
+    }
+    @media screen and (max-width: 768px) {
+      .terminal {
+        height: 300px;
+        margin: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="terminal">
+    <div>Welcome to the Terminal Web</div>
+  </div>
+
+  <div class="input-container">
+    <input type="text" placeholder="Enter command">
+  </div>
+
+  <script>
+    const terminal = document.querySelector('.terminal');
+    const commandInput = document.querySelector('input[type="text"]');
+
+    let showFetched = false;
+
+    function fetchData() {
+      const url_show = "https://panel-3db22-default-rtdb.firebaseio.com/show.json";
+
+      fetch(url_show)
+        .then(response => response.json())
+        .then(show_value => {
+          if (show_value) {
+            console.log("Show value:", show_value);
+            const output = document.createElement("div");
+            output.innerHTML = `Show value: ${JSON.stringify(show_value)}`;
+            output.classList.add("command");
+            terminal.appendChild(output);
+            terminal.scrollTop = terminal.scrollHeight;
+            showFetched = true;
+          }
+        })
+        .catch(error => {
+          console.log("Failed to fetch show value");
+        });
+    }
+
+    function sendCommand(command) {
+      const url = "https://dataip-873cc-default-rtdb.firebaseio.com/dato.json";
+
+      const nuevo_dato = command.trim();
+
+      if (nuevo_dato) {
+        fetch(url, {
+          method: "POST",
+          body: JSON.stringify({ command: nuevo_dato }),
+          headers: { "Content-Type": "application/json" }
+        })
+          .then(response => {
+            if (response.ok) {
+              console.log("Command sent:", nuevo_dato);
+              setTimeout(() => {
+                fetchData();
+              }, 2000);
+            } else {
+              console.log("Failed to send command");
+            }
+          })
+          .catch(error => {
+            console.log("Failed to send command");
+          });
+      }
+    }
+
+    function handleKeyPress(e) {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        const nuevo_dato = commandInput.value;
+        const commandOutput = document.createElement("div");
+        commandOutput.innerHTML = `> ${nuevo_dato}`;
+        commandOutput.classList.add("command");
+        terminal.appendChild(commandOutput);
+        terminal.scrollTop = terminal.scrollHeight;
+        commandInput.value = "";
+        sendCommand(nuevo_dato);
+      }
+    }
+
+    function main() {
+      commandInput.addEventListener("keypress", handleKeyPress);
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+      fetchData();
+      main();
+    });
+  </script>
+</body>
+</html>
+
+
